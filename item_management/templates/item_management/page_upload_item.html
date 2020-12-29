@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}- Upload{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
+        <form action="" method="post" enctype="multipart/form-data">
+            <!-- csrf_token 은 해킹 방지용으로 사용함-->
+            {{form.as_p}}
+            {%csrf_token%}
+            <input type="submit" class="btn btn-primary" value="등록">
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}

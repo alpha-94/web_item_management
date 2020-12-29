@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}- 자산 삭제{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="alert alert-info">
+            <!-- model 내부 __str__ 이 출력됨 -->
+            Do you want to delete {{object}} ?
+        </div>
+        <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
+        <form action="" method="post">
+            <!-- csrf_token 은 해킹 방지용으로 사용함-->
+            {{form.as_p}}
+            {%csrf_token%}
+            <input type="submit" class="btn btn-primary" value="Confirm">
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}
