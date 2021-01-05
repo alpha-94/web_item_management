@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'item_management.apps.ItemManagementConfig',
     'entry_management.apps.EntryManagementConfig',
+    'sass_processor',
+    'import_export',
+    'django_tables2',
+    'crispy_forms',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +136,12 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
+# STATICFILES_FINDERS = (
+#     'sass_processor.finders.CssFinder',
+# )
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-DEFAULT_FILE_STORAGE = 'config.s3media.MediaStorage'
+# DEFAULT_FILE_STORAGE = 'config.s3media.MediaStorage'

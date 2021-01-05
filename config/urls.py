@@ -20,5 +20,6 @@ from item_management.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('item/', include('item_management.urls'))
+    path('item/', include('item_management.urls')),
+    path('entry/', include('entry_management.urls'))
 ]
