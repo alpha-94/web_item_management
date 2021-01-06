@@ -25,6 +25,6 @@ urlpatterns = [
     path('detail/<int:pk>', DetailView.as_view(model=Item_info, template_name='item_management/page_detail_item.html'),
          name='item_detail'),
     path('upload/', Item_UploadView.as_view(), name='item_upload'),
-    path('delete/', Item_DeleteView.as_view(), name='item_delete'),
-    path('update/', Item_UpdateView.as_view(), name='item_update'),  # <int:pk>
+    path('delete/<int:pk>', Item_DeleteView.as_view(), name='item_delete'),
+    path('update/<int:pk>', Item_UpdateView.as_view(), name='item_update'),  # <int:pk>
 ]

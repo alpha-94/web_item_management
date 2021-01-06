@@ -21,15 +21,21 @@ from crispy_forms.helper import FormHelper
 
 class Item_Info_Table(tables.Table):
     class Meta:
-        attrs = {"class": "table table-hover"}
+        attrs = {
+            "class": "table table-bordered",
+            'id': 'dataTable',
+            'width': '100%',
+            'cellspacing': '0',
+        }
+        row_attrs = {
+        }
         model = Item_info
         fields = ('item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
-                  'manager_name', 'manu_name', 'model_number', 'image')
+                  'manager_name', 'manu_name', 'model_number')
 
 
 class Item_list_View(tables.SingleTableView):
     table_class = Item_Info_Table
-    table_pagination = {"per_page": 10}
     queryset = Item_info.objects.all()
     template_name = "item_management/page_list_item.html"
 
@@ -56,7 +62,6 @@ class Item_Upload_Form(forms.ModelForm):
             'manager_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manu_name': forms.TextInput(attrs={'class': 'form-control'}),
             'model_number': forms.TextInput(attrs={'class': 'form-control'}),
-
         }
 
 

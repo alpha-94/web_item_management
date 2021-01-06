@@ -6,16 +6,38 @@
 
 {% block content %}
 
-<div class="custom-area"></div>
-<div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 panel panel-default">
-            {% load django_tables2 %}
-            {% render_table table %}
+<!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- DataTales -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                            <h6 class="col-11 m-0 font-weight-bold text-primary">자산관리 현황</h6>
+                            <i class="col far fa-plus-square">  create</i>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                 {% load django_tables2 %}
+                                 {% render_table table %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
         </div>
-
-        <div class="col-md-2"></div>
-    </div>
-
+        <!-- End of Content Wrapper -->
 
 {% endblock %}
