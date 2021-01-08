@@ -18,8 +18,12 @@ from django_tables2 import RequestConfig
 import django_filters
 from crispy_forms.helper import FormHelper
 
+from django_tables2.utils import A
+
 
 class Item_Info_Table(tables.Table):
+    item_code = tables.TemplateColumn('<a href=\'{% url \'item:item_detail\' pk=record.id %}\'>{{value}}</a>')
+
     class Meta:
         attrs = {
             "class": "table table-bordered",
@@ -27,9 +31,9 @@ class Item_Info_Table(tables.Table):
             'width': '100%',
             'cellspacing': '0',
         }
-        row_attrs = {
-        }
+
         model = Item_info
+
         fields = ('item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
                   'manager_name', 'manu_name', 'model_number')
 
@@ -38,6 +42,7 @@ class Item_list_View(tables.SingleTableView):
     table_class = Item_Info_Table
     queryset = Item_info.objects.all()
     template_name = "item_management/page_list_item.html"
+    context_object_name = 'test_list'
 
 
 # Create your views here.
