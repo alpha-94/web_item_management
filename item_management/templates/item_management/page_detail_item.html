@@ -12,19 +12,19 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">자산 상세내용 - 작성자 :: {{object.author.username}}</h1>
     </div>
-    <a href="{% url 'item:item_delete' pk=object.id%}" class="btn btn-outline-danger btn-sm float-right">삭제</a>
-    <a href="{% url 'item:item_update' pk=object.id%}" class="btn btn-outline-success btn-sm float-right">수정</a>
     <div class="row">
-        {% for i in object.cell %}
-        <p>{{i}}</p>
-        {% endfor %}
+        <a href="{% url 'item:item_delete' pk=object.id%}" class="btn btn-outline-danger btn-sm float-right">삭제</a>
+        <a href="{% url 'item:item_update' pk=object.id%}" class="btn btn-outline-success btn-sm float-right">수정</a>
+    </div>
+
+
+    <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                재고번호</div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">재고번호</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.item_code}}</div>
                         </div>
                         <div class="col-auto">
@@ -34,19 +34,107 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-
-
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                품목</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">품목</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.item_class}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">품명</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.item_name}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">가격</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.item_price}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">상태</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.item_condition}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">담당자</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.manager_name}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">제조사</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.manu_name}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">모델넘버</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.model_number}}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -69,62 +157,5 @@
         <img src="{{object.image}}">
 -->
 
-
-<div class="row">
-
-    <div class="col-lg-6">
-
-        <!-- Default Card Example -->
-        <div class="card mb-4">
-            <div class="card-header">
-                Default Card Example
-            </div>
-            <div class="card-body">
-                This card uses Bootstrap's default styling with no utility classes added. Global
-                styles are the only things modifying the look and feel of this default card example.
-            </div>
-        </div>
-
-        <!-- Basic Card Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
-            </div>
-            <div class="card-body">
-                The styling for this basic card example is created by using default Bootstrap
-                utility classes. By using utility classes, the style of the card component can be
-                easily modified with no need for any custom CSS!
-            </div>
-        </div>
-
-    </div>
-
-    <div class="col-lg-6">
-
-        <!-- Default Card Example -->
-        <div class="card mb-4">
-            <div class="card-header">
-                Default Card Example
-            </div>
-            <div class="card-body">
-                This card uses Bootstrap's default styling with no utility classes added. Global
-                styles are the only things modifying the look and feel of this default card example.
-            </div>
-        </div>
-
-        <!-- Basic Card Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
-            </div>
-            <div class="card-body">
-                The styling for this basic card example is created by using default Bootstrap
-                utility classes. By using utility classes, the style of the card component can be
-                easily modified with no need for any custom CSS!
-            </div>
-        </div>
-
-    </div>
-</div>
 
 {% endblock %}

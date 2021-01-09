@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dj_company_item',  # mysql
         'USER': 'root',  # root
-        'PASSWORD': 'root',  # 1234
+        'PASSWORD': '1234',  # 1234
         'HOST': '',  # 공백으로 냅두면 default localhost
         'PORT': ''  # 공백으로 냅두면 default 3306
 

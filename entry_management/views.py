@@ -34,3 +34,34 @@ class Entry_list_View(tables.SingleTableView):
     table_pagination = {"per_page": 10}
     queryset = Entry_Info.objects.all()
     template_name = "entry_management/page_list_entry.html"
+
+
+class Entry_Upload_Form(forms.ModelForm):
+    class Meta:
+        model = Entry_Info
+        fields = ['id', 'entry_date', 'entry_code', 'entry_name', 'entry_condition', 'manager_name']
+
+        widgets = {
+            'entry_date': forms.DateInput(attrs={'class': 'form-control'}),
+            'entry_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '15자 이내로 입력 가능합니다.'}),
+            'entry_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'entry_condition': forms.Select(attrs={'class': 'form-control'}),
+            'manager_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class Item_UploadView(CreateView):
+    model = Entry_Info
+
+    template_name = 'entry_management/page_upload_entry.html'
+    form_class = Entry_Upload_Form
+
+    def form_valid(self, form):
+        form.instance.author_id = self.request.user.id
+
+        if form.is_valid():
+            form.instance.save()
+            return redirect('/item')
+
+        else:
+            return self.render_to_response({'form': form})

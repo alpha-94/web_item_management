@@ -54,7 +54,7 @@ def index(request):
 class Item_Upload_Form(forms.ModelForm):
     class Meta:
         model = Item_info
-        fields = ['item_date', 'item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
+        fields = ['id', 'item_date', 'item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
                   'manager_name', 'manu_name', 'model_number', 'image']
 
         widgets = {
