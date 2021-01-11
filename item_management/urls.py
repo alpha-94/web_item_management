@@ -22,9 +22,12 @@ app_name = 'item'
 
 urlpatterns = [
     path('', Item_list_View.as_view(), name='item_list'),
+    path('example/', index_example, name='example'),
     path('detail/<int:pk>', DetailView.as_view(model=Item_info, template_name='item_management/page_detail_item.html'),
          name='item_detail'),
     path('upload/', Item_UploadView.as_view(), name='item_upload'),
     path('delete/<int:pk>', Item_DeleteView.as_view(), name='item_delete'),
     path('update/<int:pk>', Item_UpdateView.as_view(), name='item_update'),  # <int:pk>
+    path('qrcode/', qrcode, name='qrcode'),
+    path('qrcode_result/', qrcode, name='qrcode'),
 ]

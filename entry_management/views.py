@@ -22,6 +22,8 @@ from crispy_forms.helper import FormHelper
 # Create your views here.
 
 class Entry_Info_Table(tables.Table):
+    entry_code = tables.TemplateColumn('<a href=#>{{value}}</a>')  # \'{% url \'entry:entry_detail\' pk=record.id %}\'
+
     class Meta:
         attrs = {"class": "table table-hover"}
         model = Entry_Info
@@ -39,7 +41,7 @@ class Entry_list_View(tables.SingleTableView):
 class Entry_Upload_Form(forms.ModelForm):
     class Meta:
         model = Entry_Info
-        fields = ['id', 'entry_date', 'entry_code', 'entry_name', 'entry_condition', 'manager_name']
+        fields = ['entry_date', 'entry_code', 'entry_name', 'entry_condition', 'manager_name']
 
         widgets = {
             'entry_date': forms.DateInput(attrs={'class': 'form-control'}),
@@ -61,7 +63,7 @@ class Item_UploadView(CreateView):
 
         if form.is_valid():
             form.instance.save()
-            return redirect('/item')
+            return redirect('/entry')
 
         else:
             return self.render_to_response({'form': form})

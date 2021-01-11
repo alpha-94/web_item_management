@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django_tables2',
     'crispy_forms',
     'django_filters',
+    'corsheaders',
+    # 'stream_django',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -89,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dj_company_item',  # mysql
         'USER': 'root',  # root
-        'PASSWORD': '1234',  # 1234
+        'PASSWORD': 'root',  # 1234
         'HOST': '',  # 공백으로 냅두면 default localhost
         'PORT': ''  # 공백으로 냅두면 default 3306
 
@@ -144,4 +147,32 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# DEFAULT_FILE_STORAGE = 'config.s3media.MediaStorage'
+# Local host
+ALLOWED_HOSTS = ['10.0.0.235', 'localhost', '127.0.0.1']
+
+# cors (외부아이피 접속용)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
+

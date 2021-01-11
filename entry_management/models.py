@@ -12,7 +12,7 @@ ENTRY_CONDITIONS = (
 
 
 class Entry_Info(models.Model):
-    author_entry = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_entry')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_entry')
 
     # entry 기본사항
     entry_code = models.CharField(max_length=100, verbose_name='사업번호')

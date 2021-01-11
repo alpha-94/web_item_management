@@ -17,8 +17,9 @@ import django_tables2.paginators as paginators
 from django_tables2 import RequestConfig
 import django_filters
 from crispy_forms.helper import FormHelper
+from .qr_code import Stream
 
-from django_tables2.utils import A
+from django.http.response import StreamingHttpResponse, HttpResponse
 
 
 class Item_Info_Table(tables.Table):
@@ -51,6 +52,10 @@ def index(request):
     return render(request, 'item_management/page_main.html')
 
 
+def index_example(request):
+    return render(request, 'item_management/example_cards.html')
+
+
 class Item_Upload_Form(forms.ModelForm):
     class Meta:
         model = Item_info
@@ -72,8 +77,6 @@ class Item_Upload_Form(forms.ModelForm):
 
 class Item_UploadView(CreateView):
     model = Item_info
-    # fields = ['item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
-    #           'manager_name', 'manu_name', 'model_number', 'image']
 
     template_name = 'item_management/page_upload_item.html'
     form_class = Item_Upload_Form
@@ -101,3 +104,20 @@ class Item_UpdateView(UpdateView):
               'manager_name', 'manu_name', 'model_number', 'image']
 
     template_name = 'item_management/page_update_item.html'
+
+
+def gen(frame):
+    print('실행')
+    while True:
+        print('tt')
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        if isinstance(frame, str):
+            break
+
+
+def qrcode(request):
+    stream = Stream()
+    frame = stream.stream()
+    # return render(request, 'item_management/qrcode_result.html', {'object': result})
+    return StreamingHttpResponse(gen(frame), content_type='multipart/x-mixed-replace; boundary=frame')
