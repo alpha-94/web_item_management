@@ -29,5 +29,5 @@ urlpatterns = [
     path('delete/<int:pk>', Item_DeleteView.as_view(), name='item_delete'),
     path('update/<int:pk>', Item_UpdateView.as_view(), name='item_update'),  # <int:pk>
     path('qrcode/', qrcode, name='qrcode'),
-    path('qrcode_result/', qrcode, name='qrcode'),
+    path('qrcode_index/', index_video, name='qrcode_index'),
 ]

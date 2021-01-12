@@ -1,18 +1,20 @@
 import pyzbar.pyzbar as pyzbar  # pip install pyzbar
 import numpy as np  # pip install numpy
 import cv2  # pip install opencv-python
-from PIL import ImageFont
+from imutils.video import VideoStream
+import imutils
 
 
 class Stream:
     def __init__(self):
-        self.cap = cv2.VideoCapture(0)
+        self.cap = VideoStream().start()
         self.barcode_type = None
         self.barcode_data = None
 
     def stream(self):
 
-        ret, img = self.cap.read()
+        img = self.cap.read()
+        # img = imutils.resize(img, width=500)
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -20,9 +22,11 @@ class Stream:
 
         for d in decoded:
             x, y, w, h = d.rect
-
             self.barcode_data = d.data.decode("UTF-8")
             self.barcode_type = d.type
+
+            if self.barcode_data != '':
+                return self.barcode_data
 
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
@@ -32,11 +36,4 @@ class Stream:
         # cv2.imshow('img', img)
         _, jpeg = cv2.imencode('.jpg', img)
 
-        if self.barcode_data is not None:
-            return self.barcode_data
-        else:
-            return jpeg.tobytes()
-
-
-
-
+        return jpeg.tobytes()

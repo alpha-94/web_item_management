@@ -19,7 +19,8 @@ import django_filters
 from crispy_forms.helper import FormHelper
 from .qr_code import Stream
 
-from django.http.response import StreamingHttpResponse, HttpResponse
+from django.template import Context, Template
+from django.http.response import StreamingHttpResponse
 
 
 class Item_Info_Table(tables.Table):
@@ -106,18 +107,25 @@ class Item_UpdateView(UpdateView):
     template_name = 'item_management/page_update_item.html'
 
 
-def gen(frame):
+def gen(obj):
     print('실행')
+    t = Template('{{data}}')
+
     while True:
-        print('tt')
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-        if isinstance(frame, str):
-            break
+        frame = obj.stream()
+        c = Context({'data': frame})
+        try:
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        except TypeError:
+            yield t.render(c)
 
 
 def qrcode(request):
-    stream = Stream()
-    frame = stream.stream()
     # return render(request, 'item_management/qrcode_result.html', {'object': result})
-    return StreamingHttpResponse(gen(frame), content_type='multipart/x-mixed-replace; boundary=frame')
+    frame = gen(Stream())
+    return StreamingHttpResponse(frame, content_type='multipart/x-mixed-replace; boundary=frame')
+
+
+def index_video(request):
+    return render(request, 'item_management/qrcode.html')
