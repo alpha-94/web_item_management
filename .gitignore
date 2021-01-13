@@ -1,2 +1,5 @@
 # custom-zone
 *.hwp
+
+# folder ignore
+startbootstrap-sb-admin-2-gh-pages/
