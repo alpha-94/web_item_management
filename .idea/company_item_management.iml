@@ -5,7 +5,7 @@
     <orderEntry type="jdk" jdkName="Python 3.7 (Django_Basic)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="project_detection_face" />
-    <orderEntry type="module" module-name="Face-Mask-Detection" />
+    <orderEntry type="module" module-name="VjangoBasic" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="pytest" />

@@ -22,9 +22,9 @@ app_name = 'entry'
 
 urlpatterns = [
     path('', Entry_list_View.as_view(), name='entry_list'),
-    # path('detail/<int:pk>', DetailView.as_view(model=Item_info, template_name='item_management/page_detail_item.html'),
-    #      name='item_detail'),
-    path('upload/', Item_UploadView.as_view(), name='entry_upload'),
-    # path('delete/', Item_DeleteView.as_view(), name='item_delete'),
-    # path('update/', Item_UpdateView.as_view(), name='item_update'),  # <int:pk>
+    path('detail/<int:pk>', DetailView.as_view(model=Entry_Info, template_name='entry_management/page_detail_entry.html'),
+         name='entry_detail'),
+    path('upload/', Entry_UploadView.as_view(), name='entry_upload'),
+    path('delete/<int:pk>', Entry_DeleteView.as_view(), name='entry_delete'),
+    path('update/<int:pk>', Entry_UpdateView.as_view(), name='entry_update'),  # <int:pk>
 ]

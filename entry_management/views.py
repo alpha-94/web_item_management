@@ -22,18 +22,18 @@ from crispy_forms.helper import FormHelper
 # Create your views here.
 
 class Entry_Info_Table(tables.Table):
-    entry_code = tables.TemplateColumn('<a href=#>{{value}}</a>')  # \'{% url \'entry:entry_detail\' pk=record.id %}\'
+    entry_code = tables.TemplateColumn('<a href=\'{% url \'entry:entry_detail\' pk=record.id %}\'>{{value}}</a></a>')
 
     class Meta:
-        attrs = {"class": "table table-hover"}
+        attrs = {"class": "table table-bordered"}
         model = Entry_Info
         fields = ('entry_code', 'entry_date', 'entry_name', 'entry_condition',
                   'manager_name')
 
 
-class Entry_list_View(tables.SingleTableView):
+class Entry_list_View(LoginRequiredMixin, tables.SingleTableView):
     table_class = Entry_Info_Table
-    table_pagination = {"per_page": 10}
+    # table_pagination = {"per_page": 10}
     queryset = Entry_Info.objects.all()
     template_name = "entry_management/page_list_entry.html"
 
@@ -52,7 +52,7 @@ class Entry_Upload_Form(forms.ModelForm):
         }
 
 
-class Item_UploadView(CreateView):
+class Entry_UploadView(LoginRequiredMixin, CreateView):
     model = Entry_Info
 
     template_name = 'entry_management/page_upload_entry.html'
@@ -67,3 +67,17 @@ class Item_UploadView(CreateView):
 
         else:
             return self.render_to_response({'form': form})
+
+
+class Entry_DeleteView(LoginRequiredMixin, DeleteView):
+    model = Entry_Info
+    success_url = '/entry/'
+    template_name = 'entry_management/page_delete_entry.html'
+
+
+class Entry_UpdateView(LoginRequiredMixin, UpdateView):
+    model = Entry_Info
+    success_url = '/entry/'
+    fields = ['entry_date', 'entry_name', 'entry_condition', 'manager_name']
+
+    template_name = 'entry_management/page_update_entry.html'

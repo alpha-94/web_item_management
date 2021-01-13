@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}- Register Done{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 panel panel-default">
+        <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
+        <div class="alert alert-info">Registration Success. Welcome, {{new_user.username}}</div>
+    </div>
+        <a class="btn btn-info" href="/">Move to Main</a>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}

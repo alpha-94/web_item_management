@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../test/Face-Mask-Detection/.idea/Face-Mask-Detection.iml" filepath="$PROJECT_DIR$/../test/Face-Mask-Detection/.idea/Face-Mask-Detection.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../test/VjangoBasic/.idea/VjangoBasic.iml" filepath="$PROJECT_DIR$/../test/VjangoBasic/.idea/VjangoBasic.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/company_item_management.iml" filepath="$PROJECT_DIR$/.idea/company_item_management.iml" />
       <module fileurl="file://$PROJECT_DIR$/../test/project_detection_face/.idea/project_detection_face.iml" filepath="$PROJECT_DIR$/../test/project_detection_face/.idea/project_detection_face.iml" />
     </modules>

@@ -9,7 +9,7 @@ from django import forms
 from .models import *
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, reverse
 
 # 테이블 만들기
 import django_tables2 as tables
@@ -36,11 +36,10 @@ class Item_Info_Table(tables.Table):
 
         model = Item_info
 
-        fields = ('item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
-                  'manager_name', 'manu_name', 'model_number')
+        fields = ('item_code', 'item_class', 'item_name', 'item_condition')
 
 
-class Item_list_View(tables.SingleTableView):
+class Item_list_View(LoginRequiredMixin, tables.SingleTableView):
     table_class = Item_Info_Table
     queryset = Item_info.objects.all()
     template_name = "item_management/page_list_item.html"
@@ -57,7 +56,7 @@ def index_example(request):
     return render(request, 'item_management/example_cards.html')
 
 
-class Item_Upload_Form(forms.ModelForm):
+class Item_Upload_Form(LoginRequiredMixin, forms.ModelForm):
     class Meta:
         model = Item_info
         fields = ['id', 'item_date', 'item_code', 'item_class', 'item_name', 'item_price', 'item_condition',
@@ -65,7 +64,7 @@ class Item_Upload_Form(forms.ModelForm):
 
         widgets = {
             'item_date': forms.DateInput(attrs={'class': 'form-control'}),
-            'item_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '15자 이내로 입력 가능합니다.'}),
+            'item_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AR + 부서 + 구매년월 + 숫자'}),
             'item_class': forms.Select(attrs={'class': 'form-control'}),
             'item_name': forms.TextInput(attrs={'class': 'form-control'}),
             'item_price': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -76,7 +75,7 @@ class Item_Upload_Form(forms.ModelForm):
         }
 
 
-class Item_UploadView(CreateView):
+class Item_UploadView(LoginRequiredMixin, CreateView):
     model = Item_info
 
     template_name = 'item_management/page_upload_item.html'
@@ -93,14 +92,15 @@ class Item_UploadView(CreateView):
             return self.render_to_response({'form': form})
 
 
-class Item_DeleteView(DeleteView):
+class Item_DeleteView(LoginRequiredMixin, DeleteView):
     model = Item_info
-    success_url = '/'
+    success_url = '/item/'
     template_name = 'item_management/page_delete_item.html'
 
 
-class Item_UpdateView(UpdateView):
+class Item_UpdateView(LoginRequiredMixin, UpdateView):
     model = Item_info
+    success_url = '/item/'
     fields = ['item_class', 'item_name', 'item_price', 'item_condition',
               'manager_name', 'manu_name', 'model_number', 'image']
 

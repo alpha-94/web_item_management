@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}- 자산 삭제{% endblock %}
+{% block title %}- {{object.item_code}} 자산 삭제{% endblock %}
 
 {% block content %}
 <div class="custom-area"></div>
@@ -8,7 +8,7 @@
     <div class="col-md-8">
         <div class="alert alert-info">
             <!-- model 내부 __str__ 이 출력됨 -->
-            Do you want to delete {{object}} ?
+            {{object.item_code}} 자산 내용을 삭제하시겠습니까?
         </div>
         <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
         <form action="" method="post">
