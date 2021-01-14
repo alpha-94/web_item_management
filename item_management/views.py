@@ -24,6 +24,7 @@ from django.http.response import StreamingHttpResponse
 
 
 class Item_Info_Table(tables.Table):
+    # select = tables.TemplateColumn('<input type= \'checkbox\' name=\'item[]\' id=\'{{record.id}}\'>', verbose_name='')
     item_code = tables.TemplateColumn('<a href=\'{% url \'item:item_detail\' pk=record.id %}\'>{{value}}</a>')
 
     class Meta:
@@ -42,8 +43,7 @@ class Item_Info_Table(tables.Table):
 class Item_list_View(LoginRequiredMixin, tables.SingleTableView):
     table_class = Item_Info_Table
     queryset = Item_info.objects.all()
-    template_name = "item_management/page_list_item.html"
-    context_object_name = 'test_list'
+    context_object_name = 'item_list'
 
 
 # Create your views here.

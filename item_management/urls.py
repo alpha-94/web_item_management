@@ -21,7 +21,7 @@ from .views import *
 app_name = 'item'
 
 urlpatterns = [
-    path('', Item_list_View.as_view(), name='item_list'),
+    path('', Item_list_View.as_view(template_name="item_management/page_list_item.html"), name='item_list'),
     path('example/', index_example, name='example'),
     path('detail/<int:pk>', DetailView.as_view(model=Item_info, template_name='item_management/page_detail_item.html'),
          name='item_detail'),

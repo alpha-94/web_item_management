@@ -18,6 +18,7 @@ from django.urls import path
 from django.views.generic.detail import DetailView
 from .views import *
 
+
 app_name = 'entry'
 
 urlpatterns = [
@@ -27,4 +28,8 @@ urlpatterns = [
     path('upload/', Entry_UploadView.as_view(), name='entry_upload'),
     path('delete/<int:pk>', Entry_DeleteView.as_view(), name='entry_delete'),
     path('update/<int:pk>', Entry_UpdateView.as_view(), name='entry_update'),  # <int:pk>
+    path('test/<int:pk>', Item_list_View_by_Entry.as_view(template_name='entry_management/test.html'), name='test'),
 ]
+
+
+# Item_list_View_by_Entry.as_view(template_name='entry_management/test.html')

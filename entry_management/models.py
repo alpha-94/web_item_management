@@ -24,3 +24,10 @@ class Entry_Info(models.Model):
     # date 설정
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+
+class Entry_Plus_Item(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    entry_id = models.ForeignKey('Entry_Info', on_delete=models.CASCADE, related_name='entry_id')
+    item_id = models.ForeignKey('item_management.Item_Info', on_delete=models.CASCADE,  related_name='item_id')
+

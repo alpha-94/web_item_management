@@ -7,9 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
 from .models import *
+
+from item_management.views import *
+
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 
 # 테이블 만들기
 import django_tables2 as tables
@@ -81,3 +85,65 @@ class Entry_UpdateView(LoginRequiredMixin, UpdateView):
     fields = ['entry_date', 'entry_name', 'entry_condition', 'manager_name']
 
     template_name = 'entry_management/page_update_entry.html'
+
+
+class Item_Info_Table_by_Entry(Item_Info_Table):
+    select = tables.TemplateColumn('<input type= \'checkbox\' name=\'item[]\' value=\'{{record.id}}\'>',
+                                   verbose_name='')
+
+    class Meta:
+        attrs = {
+            "class": "table table-bordered",
+            'id': 'dataTable',
+            'width': '100%',
+            'cellspacing': '0',
+        }
+
+
+class Item_list_View_by_Entry(Item_list_View):
+    table_class = Item_Info_Table_by_Entry
+
+
+def _item_id(request):
+    item = request.session.session_key
+    if not item:
+        item = request.session.create()
+    return item
+
+
+def add_item(request, pk):
+    pass
+
+
+'''
+class Item_Info_Table_by_Entry(Item_Info_Table):
+    select = tables.TemplateColumn('<input type= \'checkbox\' name=\'item[]\' value=\'{{record.id}}\'>',
+                                   verbose_name='')
+
+    class Meta:
+        attrs = {
+            "class": "table table-bordered",
+            'id': 'dataTable',
+            'width': '100%',
+            'cellspacing': '0',
+        }
+
+
+class Item_list_View_by_Entry(Item_list_View):
+    table_class = Item_Info_Table_by_Entry
+
+
+@csrf_exempt
+def check_list(request):
+    instance = Item_info.objects.all()
+    if request.method == 'POST':
+        # post = Item_list_View_by_Entry(request.POST)
+        print(request.POST.getlist('item[]'))
+        return HttpResponseRedirect(reverse('Item_list_View_by_Entry'))
+
+    else:
+        table = Item_list_View_by_Entry()
+        context = {'table': table}
+        return render(request, 'entry_management/test.html', context)
+
+'''

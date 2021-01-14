@@ -16,6 +16,7 @@
         <div class="row">
             <a href="{% url 'entry:entry_delete' pk=object.id%}" class="btn btn-outline-danger btn-sm float-right">삭제</a>
             <a href="{% url 'entry:entry_update' pk=object.id%}" class="btn btn-outline-success btn-sm float-right">수정</a>
+            <a href="{% url 'entry:test' pk=object.id%}" class="btn btn-outline-warning btn-sm float-right">test</a>
         </div>
 
 
