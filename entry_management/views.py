@@ -11,8 +11,10 @@ from .models import *
 from item_management.views import *
 
 from django.views.generic import TemplateView
+from django import forms
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.shortcuts import redirect, HttpResponseRedirect
+from django.views.generic.detail import DetailView
+from django.shortcuts import redirect, HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # 테이블 만들기
@@ -24,6 +26,17 @@ from crispy_forms.helper import FormHelper
 
 
 # Create your views here.
+
+
+class Entry_DetailView(DetailView):
+    model = Entry_Info
+    template_name = 'entry_management/page_detail_entry.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Entry_DetailView, self).get_context_data(**kwargs)
+        context['plus'] = Entry_Plus_Item.objects.all()
+        return context
+
 
 class Entry_Info_Table(tables.Table):
     entry_code = tables.TemplateColumn('<a href=\'{% url \'entry:entry_detail\' pk=record.id %}\'>{{value}}</a></a>')
@@ -87,63 +100,46 @@ class Entry_UpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'entry_management/page_update_entry.html'
 
 
-class Item_Info_Table_by_Entry(Item_Info_Table):
-    select = tables.TemplateColumn('<input type= \'checkbox\' name=\'item[]\' value=\'{{record.id}}\'>',
-                                   verbose_name='')
-
-    class Meta:
-        attrs = {
-            "class": "table table-bordered",
-            'id': 'dataTable',
-            'width': '100%',
-            'cellspacing': '0',
-        }
+class Item_Form(forms.Form):
+    select = forms.ChoiceField(widget=forms.CheckboxInput(attrs={'value': '{{item.id}}',
+                                                                 'id': 'item[]'}))
 
 
-class Item_list_View_by_Entry(Item_list_View):
-    table_class = Item_Info_Table_by_Entry
+def post_Item(request, pk):
+    items = Item_info.objects
+    entries = Entry_Info.objects
+    pluses = Entry_Plus_Item.objects
 
+    items_all = items.all()
 
-def _item_id(request):
-    item = request.session.session_key
-    if not item:
-        item = request.session.create()
-    return item
+    list_item = []
+    for item in items_all:
+        # print(item.id)
 
+        plus_item = pluses.filter(item_id=item.id)
 
-def add_item(request, pk):
-    pass
+        # print(plus_item.item_id_id)
+        for pi in plus_item:
+            if pi.item_id_id == item.id:
+                list_item.append(item.id)
 
+    entry_id = entries.get(id=pk)
 
-'''
-class Item_Info_Table_by_Entry(Item_Info_Table):
-    select = tables.TemplateColumn('<input type= \'checkbox\' name=\'item[]\' value=\'{{record.id}}\'>',
-                                   verbose_name='')
+    filter_items = items_all.exclude(id__in=list_item)
 
-    class Meta:
-        attrs = {
-            "class": "table table-bordered",
-            'id': 'dataTable',
-            'width': '100%',
-            'cellspacing': '0',
-        }
-
-
-class Item_list_View_by_Entry(Item_list_View):
-    table_class = Item_Info_Table_by_Entry
-
-
-@csrf_exempt
-def check_list(request):
-    instance = Item_info.objects.all()
     if request.method == 'POST':
-        # post = Item_list_View_by_Entry(request.POST)
-        print(request.POST.getlist('item[]'))
-        return HttpResponseRedirect(reverse('Item_list_View_by_Entry'))
+
+        for i in request.POST.getlist('item[]'):
+            item_id = items.get(id=i)
+            pluses.create(author_id=request.user.id,
+                          entry_id=entry_id,
+                          item_id=item_id)
+
+        return render(request, 'entry_management/test_done.html')
 
     else:
-        table = Item_list_View_by_Entry()
-        context = {'table': table}
-        return render(request, 'entry_management/test.html', context)
+        return render(request, 'entry_management/test.html', {
+            'items': filter_items,
+        })
 
-'''
+

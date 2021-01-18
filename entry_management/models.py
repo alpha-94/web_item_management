@@ -12,6 +12,7 @@ ENTRY_CONDITIONS = (
 
 
 class Entry_Info(models.Model):
+    objects = None
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_entry')
 
     # entry 기본사항
@@ -25,9 +26,12 @@ class Entry_Info(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return '{} - {}'.format(self.entry_code, self.entry_name)
+
 
 class Entry_Plus_Item(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     entry_id = models.ForeignKey('Entry_Info', on_delete=models.CASCADE, related_name='entry_id')
-    item_id = models.ForeignKey('item_management.Item_Info', on_delete=models.CASCADE,  related_name='item_id')
+    item_id = models.ForeignKey('item_management.Item_Info', unique=True, on_delete=models.CASCADE,  related_name='item_id')
 

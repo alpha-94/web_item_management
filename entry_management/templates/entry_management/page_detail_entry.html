@@ -51,12 +51,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- 품명 -->
+                <!-- 사업명 -->
                 <div class="card mb-4 py-3 border-left-primary">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">품명</div>
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">사업명</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.entry_name}}</div>
                             </div>
                             <div class="col-auto">
@@ -106,6 +106,40 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <!-- 장비등록현황 -->
+                <div class="card mb-4 py-3 border-left-success">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">장비등록현황</div>
+                                <div class="table-responsive">
+                                    <div class="table-container">
+                                        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <table class="table table-bordered dataTable no-footer">
+
+                                                <tr>
+                                                    <th>재고번호</th>
+                                                    <th>품명</th>
+                                                </tr>
+
+
+                                                {% for item in plus %}
+                                                <tr>
+                                                    <td>{{item.item_id.item_code}}</td>
+                                                    <td>{{item.item_id.item_name}}</td>
+                                                </tr>
+                                                {% endfor %}
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

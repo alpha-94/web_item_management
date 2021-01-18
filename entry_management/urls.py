@@ -15,21 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.views.generic.detail import DetailView
-from .views import *
 
+from .views import *
 
 app_name = 'entry'
 
 urlpatterns = [
     path('', Entry_list_View.as_view(), name='entry_list'),
-    path('detail/<int:pk>', DetailView.as_view(model=Entry_Info, template_name='entry_management/page_detail_entry.html'),
-         name='entry_detail'),
+    path('detail/<int:pk>', Entry_DetailView.as_view(), name='entry_detail'),
     path('upload/', Entry_UploadView.as_view(), name='entry_upload'),
     path('delete/<int:pk>', Entry_DeleteView.as_view(), name='entry_delete'),
     path('update/<int:pk>', Entry_UpdateView.as_view(), name='entry_update'),  # <int:pk>
-    path('test/<int:pk>', Item_list_View_by_Entry.as_view(template_name='entry_management/test.html'), name='test'),
+    # path('test/<int:pk>', Item_list_View_by_Entry.as_view(template_name='entry_management/test.html'), name='test'),
+    path('test/<int:pk>', post_Item, name='test'),
 ]
-
 
 # Item_list_View_by_Entry.as_view(template_name='entry_management/test.html')

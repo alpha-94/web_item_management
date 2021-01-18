@@ -156,6 +156,43 @@
                 </div>
             </div>
 
+            <div class="col-lg-6">
+                <!-- 장비등록현황 -->
+                <div class="card mb-4 py-3 border-left-success">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">사업등록현황</div>
+                                <div class="table-responsive">
+                                    <div class="table-container">
+                                        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <table class="table table-bordered dataTable no-footer">
+
+                                                <tr>
+                                                    <th>사업번호</th>
+                                                    <th>사업명</th>
+                                                </tr>
+
+
+                                                {% for item in plus %}
+                                                {% if item.item_id.id == object.id %}
+                                                <tr>
+                                                    <td>{{item.entry_id.entry_code}}</td>
+                                                    <td>{{item.entry_id.entry_name}}</td>
+                                                </tr>
+                                                {% endif %}
+                                                {% endfor %}
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
 from .models import *
+from entry_management.models import *
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.detail import DetailView
 from django.shortcuts import redirect, reverse
 
 # 테이블 만들기
@@ -21,6 +23,16 @@ from .qr_code import Stream
 
 from django.template import Context, Template
 from django.http.response import StreamingHttpResponse
+
+
+class Item_DetailView(DetailView):
+    model = Item_info
+    template_name = 'item_management/page_detail_item.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Item_DetailView, self).get_context_data(**kwargs)
+        context['plus'] = Entry_Plus_Item.objects.all()
+        return context
 
 
 class Item_Info_Table(tables.Table):
@@ -107,6 +119,7 @@ class Item_UpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'item_management/page_update_item.html'
 
 
+# ############################QR코드 관련############################# #
 def gen(obj):
     print('실행')
     t = Template('{{data}}')

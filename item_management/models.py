@@ -43,5 +43,5 @@ class Item_info(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    # def __str__(self):
-    #     return self.author.username + '' + self.created.strftime('%Y-%m-%d %H:%M:%S')
+    def __str__(self):
+        return '{} - {}'.format(self.item_code, self.item_name)
