@@ -37,3 +37,6 @@ class Stream:
         _, jpeg = cv2.imencode('.jpg', img)
 
         return jpeg.tobytes()
+
+    def read_code(self):
+        pass

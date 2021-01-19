@@ -9,7 +9,7 @@ from django import forms
 from .models import *
 from entry_management.models import *
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView, View
 from django.views.generic.detail import DetailView
 from django.shortcuts import redirect, reverse
 
@@ -120,25 +120,34 @@ class Item_UpdateView(LoginRequiredMixin, UpdateView):
 
 
 # ############################QR코드 관련############################# #
-def gen(obj):
+def gen():
     print('실행')
-    t = Template('{{data}}')
-
+    obj = Stream()
     while True:
         frame = obj.stream()
-        c = Context({'data': frame})
         try:
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            frame = (b'--frame\r\n'
+                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            yield frame
+
         except TypeError:
-            yield t.render(c)
+            obj.read_code()
+            c = {'data': frame}
+            print(c)
+            # return c
+            break
 
 
 def qrcode(request):
-    # return render(request, 'item_management/qrcode_result.html', {'object': result})
-    frame = gen(Stream())
-    return StreamingHttpResponse(frame, content_type='multipart/x-mixed-replace; boundary=frame')
+    if request.method == 'GET':
+        print('Get Video')
+        # return render(request, 'item_management/qrcode_result.html', {'object': result})
+        return StreamingHttpResponse(gen(), content_type='multipart/x-mixed-replace; boundary=frame')
+    else:
+        print('tt')
 
 
 def index_video(request):
+    if request.method == 'GET':
+        print('Get Index')
     return render(request, 'item_management/qrcode.html')

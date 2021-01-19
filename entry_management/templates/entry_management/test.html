@@ -5,48 +5,100 @@
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="row">
 
     <!-- DataTales -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <div class="row">
-                <h6 class="col-11 m-0 font-weight-bold text-primary">자산관리 현황</h6>
-                <i class="col far fa-plus-square">  create</i>
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <h6 class="col-11 m-0 font-weight-bold text-primary">등록할 자산</h6>
+                    <i class="col far fa-plus-square">  create</i>
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            <form method="post" action="">{% csrf_token %}
-                <div class="table-responsive">
-                    <div class="table-container">
-                        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                            <button>넘기기</button>
-                            <table class="table table-bordered dataTable no-footer">
+            <div class="card-body">
+                <form method="post" action="">{% csrf_token %}
+                    <div class="table-responsive">
+                        <div class="table-container">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <button>등록하기</button>
+                                <table class="table table-bordered dataTable no-footer">
 
-                                <tr>
-                                    <th>재고번호</th>
-                                    <th>품명</th>
-                                    <th>선택</th>
-                                </tr>
+                                    <tr>
+                                        <th>재고번호</th>
+                                        <th>품명</th>
+                                        <th>선택</th>
+                                    </tr>
 
 
-                                {% for item in items %}
-                                <tr>
-                                    <td>{{item.item_code}}</td>
-                                    <td>{{item.item_name}}</td>
-                                    <td>
-                                        <input type="checkbox" name="item[]" value="{{item.id}}" >
-                                    </td>
+                                    {% for item in items %}
+                                    <tr>
+                                        <td>{{item.item_code}}</td>
+                                        <td>{{item.item_name}}</td>
+                                        <td>
+                                            <input type="checkbox" name="item[]" value="{{item.id}}" >
+                                        </td>
 
-                                </tr>
-                                {% endfor %}
+                                    </tr>
+                                    {% endfor %}
 
-                            </table>
+
+
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <h6 class="col-11 m-0 font-weight-bold text-primary">등록된 자산</h6>
+                    <i class="col far fa-plus-square">  create</i>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" action="">{% csrf_token %}
+                    <div class="table-responsive">
+                        <div class="table-container">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <button>취소하기</button>
+                                <table class="table table-bordered dataTable no-footer">
+
+                                    <tr>
+                                        <th>재고번호</th>
+                                        <th>품명</th>
+                                        <th>선택</th>
+                                    </tr>
+
+
+                                    {% for item in un_items %}
+                                    <tr>
+                                        <td>{{item.item_code}}</td>
+                                        <td>{{item.item_name}}</td>
+                                        <td>
+                                            <input type="checkbox" name="item[]" value="{{item.id}}" >
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+
         </div>
     </div>
 

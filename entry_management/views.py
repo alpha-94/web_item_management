@@ -16,6 +16,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.shortcuts import redirect, HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models.query import QuerySet, EmptyQuerySet
 
 # 테이블 만들기
 import django_tables2 as tables
@@ -100,11 +101,6 @@ class Entry_UpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'entry_management/page_update_entry.html'
 
 
-class Item_Form(forms.Form):
-    select = forms.ChoiceField(widget=forms.CheckboxInput(attrs={'value': '{{item.id}}',
-                                                                 'id': 'item[]'}))
-
-
 def post_Item(request, pk):
     items = Item_info.objects
     entries = Entry_Info.objects
@@ -113,12 +109,15 @@ def post_Item(request, pk):
     items_all = items.all()
 
     list_item = []
+    un_list_item = []
     for item in items_all:
         # print(item.id)
 
         plus_item = pluses.filter(item_id=item.id)
 
-        # print(plus_item.item_id_id)
+        if not plus_item:
+            un_list_item.append(item.id)
+
         for pi in plus_item:
             if pi.item_id_id == item.id:
                 list_item.append(item.id)
@@ -126,20 +125,32 @@ def post_Item(request, pk):
     entry_id = entries.get(id=pk)
 
     filter_items = items_all.exclude(id__in=list_item)
+    filter_un_items = items_all.exclude(id__in=un_list_item)
+    print('list_item:: ', list_item)
+    print('un_list_item:: ', un_list_item)
 
     if request.method == 'POST':
 
         for i in request.POST.getlist('item[]'):
-            item_id = items.get(id=i)
-            pluses.create(author_id=request.user.id,
-                          entry_id=entry_id,
-                          item_id=item_id)
+            for un_item in un_list_item:
+                # print(un_item == int(i), 'un_item::', un_item, 'i::', int(i))
+                if un_item == int(i):
+                    print('create')
+                    item_id = items.get(id=i)
+                    pluses.create(author_id=request.user.id,
+                                  entry_id=entry_id,
+                                  item_id=item_id)
+
+            for item in list_item:
+                if item == int(i):
+                    print('delete')
+                    item_id = items.get(id=i)
+                    pluses.get(item_id=item_id).delete()
 
         return render(request, 'entry_management/test_done.html')
 
     else:
         return render(request, 'entry_management/test.html', {
             'items': filter_items,
+            'un_items': filter_un_items,
         })
-
-

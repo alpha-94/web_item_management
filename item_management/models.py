@@ -45,3 +45,4 @@ class Item_info(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.item_code, self.item_name)
+

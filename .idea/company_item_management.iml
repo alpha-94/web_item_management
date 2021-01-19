@@ -6,6 +6,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="project_detection_face" />
     <orderEntry type="module" module-name="VjangoBasic" />
+    <orderEntry type="module" module-name="새 폴더" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="pytest" />

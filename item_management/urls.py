@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic.detail import DetailView
 from .views import *
+from .qr_code import *
 
 app_name = 'item'
 
