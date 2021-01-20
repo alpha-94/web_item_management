@@ -4,43 +4,47 @@
 {% block content %}
 
 <div class="container">
-<div class="row">
-    <div class="col-md-2 order-md-1"></div>
-    <div class="col-md-8 order-md-2">
-        <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
+    <div class="row">
+        <div class="col-md-2 order-md-1"></div>
+        <div class="col-md-8 order-md-2">
+            <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
 
-        <form class="needs-validation" action="" method="post" enctype="multipart/form-data">
-            <!-- csrf_token 은 해킹 방지용으로 사용함-->
-            {%csrf_token%}
-             {% for field in form.hidden_fields %}
-                    {{field}}
-             {% endfor %}
+            <form class="needs-validation" action="" method="post" enctype="multipart/form-data">
+                <!-- csrf_token 은 해킹 방지용으로 사용함-->
+                {%csrf_token%}
+                {% for field in form.hidden_fields %}
+                {{field}}
+                {% endfor %}
+                <label>재고번호 등록</label>
                 <div class="row">
-                {% for field in form.visible_fields %}
-                {% if field.name == "item_date" or field.name == "item_code" %}
-                    <div class="col-md-6 mb-3">
+
+                    {% for field in form.visible_fields %}
+                    {% if field.name == "item_date" or field.name == "custom_id" or field.name == "group" %}
+                    <div class="col-md-4 mb-3">
                         <label for="id_{{field.name}}">{{ field.label_tag }}</label>
                         {{ field }}
                     </div>
-                {% endif %}
-                {% endfor %}
-                </div>
+                    {% endif %}
 
+                    {% endfor %}
+                </div>
+                <hr>
+                <label>재고 상세</label>
                 {% for field in form.visible_fields %}
-                {% if field.name != "item_date" and field.name != "item_code" %}
+                {% if field.name != "item_date" and field.name != "custom_id" and field.name != "group"%}
                 <div class="mb-3">
                     <label for="id_{{field.name}}">{{ field.label_tag }}</label>
                     {{ field }}
                 </div>
-                    {% endif %}
-                    {% endfor %}
+                {% endif %}
+                {% endfor %}
 
 
                 <input type="submit" class="btn btn-primary" value="등록">
-        </form>
-    </div>
-    <div class="col-md-2 order-md-3"></div>
+            </form>
+        </div>
+        <div class="col-md-2 order-md-3"></div>
 
-</div>
+    </div>
 </div>
 {% endblock %}

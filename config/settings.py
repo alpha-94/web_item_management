@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # 'stream_django',
     'django_extensions',
+    'bootstrap3',
 ]
 
 MIDDLEWARE = [
