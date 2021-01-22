@@ -13,7 +13,7 @@ ENTRY_CONDITIONS = (
 
 class Entry_Info(models.Model):
     objects = None
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_entry')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='et_user', db_column='et_user')
 
     # entry 기본사항
     entry_code = models.CharField(max_length=100, verbose_name='사업번호')
@@ -30,8 +30,11 @@ class Entry_Info(models.Model):
         return '{} - {}'.format(self.entry_code, self.entry_name)
 
 
-class Entry_Plus_Item(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
-    entry_id = models.ForeignKey('Entry_Info', on_delete=models.CASCADE, related_name='entry_id')
-    item_id = models.ForeignKey('item_management.Item_Info', unique=True, on_delete=models.CASCADE,  related_name='item_id')
+class Selected_Item_Info(models.Model):
+    item_id = models.ForeignKey('item_management.Item_Info', on_delete=models.CASCADE, related_name='se_item',
+                                db_column='se_item', primary_key=True)
 
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='se_user', db_column='se_user')
+    entry_id = models.ForeignKey('Entry_Info', on_delete=models.CASCADE, related_name='se_entry', db_column='se_entry')
+
+    selected_item_count = models.PositiveSmallIntegerField(verbose_name='출하량')  # 32767 자리까지

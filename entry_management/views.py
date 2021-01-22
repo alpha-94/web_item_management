@@ -35,7 +35,7 @@ class Entry_DetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(Entry_DetailView, self).get_context_data(**kwargs)
-        context['plus'] = Entry_Plus_Item.objects.all()
+        context['plus'] = Selected_Item_Info.objects.all()
         return context
 
 
@@ -104,50 +104,69 @@ class Entry_UpdateView(LoginRequiredMixin, UpdateView):
 def post_Item(request, pk):
     items = Item_info.objects
     entries = Entry_Info.objects
-    pluses = Entry_Plus_Item.objects
+    selected = Selected_Item_Info.objects
 
     items_all = items.all()
 
-    list_item = []
-    un_list_item = []
+    list_item = []  # 종합정보 내 들어있는 자산 리스트
+    selected_list_item = []  # 종합정보 내 들어있지 않는 자산 리스트
+
+    # 자산 전체 iter
     for item in items_all:
-        # print(item.id)
 
-        plus_item = pluses.filter(item_id=item.id)
+        # item id 와 일치 하는 종합정보 필터
+        plus_item = selected.filter(item_id=item.id)
 
+        # 필터 내 들어있지 않는다면
         if not plus_item:
-            un_list_item.append(item.id)
+            selected_list_item.append(item.id)
 
-        for pi in plus_item:
-            if pi.item_id_id == item.id:
-                list_item.append(item.id)
+        # 들어 있다면
+        else:
+            list_item.append(item.id)
 
     entry_id = entries.get(id=pk)
 
-    filter_items = items_all.exclude(id__in=list_item)
-    filter_un_items = items_all.exclude(id__in=un_list_item)
-    print('list_item:: ', list_item)
-    print('un_list_item:: ', un_list_item)
+    filter_items = items_all.exclude(item_count=0)
+    filter_un_items = items_all.exclude(id__in=selected_list_item)
 
     if request.method == 'POST':
 
-        for i in request.POST.getlist('item[]'):
-            for un_item in un_list_item:
-                # print(un_item == int(i), 'un_item::', un_item, 'i::', int(i))
-                if un_item == int(i):
-                    print('create')
+        for idx, i in enumerate(request.POST.getlist('item[]')):
+
+            for se_item in selected_list_item:
+                print('se_item', se_item)
+                if se_item == int(i):
+
+                    get_count = int(request.POST.getlist('count[]')[idx])
+                    print('item id :: ', i, '  item_discount ::', get_count)
                     item_id = items.get(id=i)
-                    pluses.create(author_id=request.user.id,
-                                  entry_id=entry_id,
-                                  item_id=item_id)
+                    item_count = int(item_id.item_count)
+
+                    if item_count >= get_count:
+                        print('create')
+                        selected.create(author_id=request.user.id,
+                                        entry_id=entry_id,
+                                        item_id=item_id,
+                                        selected_item_count=get_count
+                                        )
+                        items.filter(id=i).update(item_count=item_count - get_count)
+
+                    else:
+                        print('fail')
+                        return render(request, 'entry_management/test.html', {
+                            'items': filter_items,
+                            'un_items': filter_un_items,
+                        })
 
             for item in list_item:
+                print('item', item)
                 if item == int(i):
                     print('delete')
                     item_id = items.get(id=i)
-                    pluses.get(item_id=item_id).delete()
+                    selected.get(item_id=item_id).delete()
 
-        return render(request, 'entry_management/test_done.html')
+        return redirect('/entry/detail/{}'.format(pk))
 
     else:
         return render(request, 'entry_management/test.html', {

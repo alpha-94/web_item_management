@@ -21,22 +21,29 @@
                     <div class="table-responsive">
                         <div class="table-container">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                <button>등록하기</button>
+                                <button id="post">등록하기</button>
                                 <table class="table table-bordered dataTable no-footer">
 
                                     <tr>
                                         <th>재고번호</th>
                                         <th>품명</th>
                                         <th>선택</th>
+                                        <th>수량</th>
+                                        <th>등록할 수량</th>
                                     </tr>
 
 
                                     {% for item in items %}
+
                                     <tr>
                                         <td>{{item.item_code}}</td>
                                         <td>{{item.item_name}}</td>
                                         <td>
-                                            <input type="checkbox" name="item[]" value="{{item.id}}" >
+                                            <input  id="itemCheck{{item.id}}" type="checkbox" name="item[]" value="{{item.id}}" >
+                                        </td>
+                                        <td>{{item.item_count}}</td>
+                                        <td>
+                                            <input id="itemCount{{item.id}}" type="number" name="count[]" value="">
                                         </td>
 
                                     </tr>
@@ -82,7 +89,7 @@
                                         <td>{{item.item_code}}</td>
                                         <td>{{item.item_name}}</td>
                                         <td>
-                                            <input type="checkbox" name="item[]" value="{{item.id}}" >
+                                            <input class="select" type="checkbox" name="item[]" value="{{item.id}}" >
                                         </td>
 
                                     </tr>
@@ -104,5 +111,22 @@
 
 </div>
 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+            {% for item in items %}
+            $('#itemCount{{item.id}}').attr('readonly', true);
+            $("#itemCheck{{item.id}}").change(function () {
+                if ($(this).is(":checked")) {
+                    $('#itemCount{{item.id}}').removeAttr("readonly")
+                }
+                else {
+                    $('#itemCount{{item.id}}').attr('readonly', true);
+                }
+            });
+            {% endfor %}
+        });
+</script>
 {% endblock %}
+
 

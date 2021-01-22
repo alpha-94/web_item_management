@@ -92,6 +92,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- 재고 개수 -->
+                <div class="card mb-4 py-3 border-left-primary">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">개수</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{object.item_count}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- 선택 입력칸 -->
             <div class="col-lg-6">
@@ -137,26 +151,6 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card mb-4 py-3 border-left-warning">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">사진</div>
-                                <img src="{{object.image.url}}">
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
                 <!-- 장비등록현황 -->
                 <div class="card mb-4 py-3 border-left-success">
                     <div class="card-body">
@@ -191,8 +185,24 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
+            <div class="col-lg-6">
+                <div class="card mb-4 py-3 border-left-warning">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">사진</div>
+                                <img src="{{object.image.url}}">
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

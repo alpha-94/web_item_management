@@ -110,7 +110,7 @@ class Item_UploadView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         code_list = Item_info.objects.values('item_code')
 
-        # print(form.instance.group)
+        # 재고번호 규격화 > 재고번호가 겹칠 경우 대비 최근에 있었던 재고번호에 +1 증가시켜 재고번호 부여
         for codes in code_list:
             text = codes['item_code']
             # 그룹이 일치 하는지
@@ -122,11 +122,13 @@ class Item_UploadView(LoginRequiredMixin, CreateView):
                     # 코드가 일치 하는지
                     if text[7:11] == str(form.cleaned_data['custom_id']).zfill(4):
                         form.cleaned_data['custom_id'] += 1
-                        print(form.cleaned_data['custom_id'], 'true')
-
+                        # print(form.cleaned_data['custom_id'], 'true')
             else:
-                # print('false group')
-                form.instance.item_code = str(form.instance.group) + form.instance.item_date.strftime('%Y%m')[-4:] + str(form.cleaned_data['custom_id']).zfill(4)
+                pass
+
+        form.instance.item_code = str(form.instance.group) \
+                                  + form.instance.item_date.strftime('%Y%m')[-4:] \
+                                  + str(form.cleaned_data['custom_id']).zfill(4)
         print(form.instance.item_code)
         form.instance.author_id = self.request.user.id
 
