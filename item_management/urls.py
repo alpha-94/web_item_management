@@ -21,7 +21,7 @@ app_name = 'item'
 
 urlpatterns = [
     path('', Item_list_View.as_view(template_name="item_management/page_list_item.html"), name='item_list'),
-    path('example/', index_example, name='example'),
+    path('analyze/', index_analyze, name='analyze'),
     path('detail/<int:pk>', Item_DetailView.as_view(),
          name='item_detail'),
     path('upload/', Item_UploadView.as_view(), name='item_upload'),

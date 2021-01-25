@@ -71,8 +71,21 @@ def index(request):
     return render(request, 'item_management/page_main.html', context)
 
 
-def index_example(request):
-    return render(request, 'item_management/example_cards.html')
+def index_analyze(request):
+    context = {'object': Item_info.objects.all(),
+               
+               # 품목별 현황
+               'office': Item_info.objects.filter(item_class='사무'),
+               'equipment': Item_info.objects.filter(item_class='장비'),
+               'computational': Item_info.objects.filter(item_class='전산'),
+               'part': Item_info.objects.filter(item_class='부품'),
+               
+               # 부서별 현황
+               'ARM': Item_info.objects.filter(group=1),
+               'ARP': Item_info.objects.filter(group=2),
+               'ARF': Item_info.objects.filter(group=3),
+               }
+    return render(request, 'item_management/page_analyze.html', context)
 
 
 class Item_Upload_Form(LoginRequiredMixin, forms.ModelForm):
