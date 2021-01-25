@@ -8,23 +8,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
 from .models import *
 from entry_management.models import *
-from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView, View
+
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.shortcuts import redirect, reverse
 
 from django_filters.views import FilterView
-from django_filters.rest_framework import filters
-from datetime import date
+
 # 테이블 만들기
 import django_tables2 as tables
-import django_tables2.paginators as paginators
-from django_tables2 import RequestConfig
+
 import django_filters
-from crispy_forms.helper import FormHelper
+
 from .qr_code import Stream
 
-from django.template import Context, Template
 from django.http.response import StreamingHttpResponse
 
 
@@ -34,7 +31,7 @@ class Item_DetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(Item_DetailView, self).get_context_data(**kwargs)
-        context['plus'] = Entry_Plus_Item.objects.all()
+        context['plus'] = Selected_Item_Info.objects.all()
         return context
 
 
@@ -84,7 +81,7 @@ class Item_Upload_Form(LoginRequiredMixin, forms.ModelForm):
     class Meta:
         model = Item_info
         fields = ['id', 'group', 'item_date', 'item_class', 'item_name', 'item_price',
-                  'item_condition',
+                  'item_full_count', 'item_condition',
                   'manager_name', 'manu_name', 'model_number', 'image']
 
         widgets = {
@@ -94,6 +91,7 @@ class Item_Upload_Form(LoginRequiredMixin, forms.ModelForm):
             'item_class': forms.Select(attrs={'class': 'form-control'}),
             'item_name': forms.TextInput(attrs={'class': 'form-control'}),
             'item_price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'item_full_count': forms.NumberInput(attrs={'class': 'form-control'}),
             'item_condition': forms.Select(attrs={'class': 'form-control'}),
             'manager_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manu_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -131,6 +129,7 @@ class Item_UploadView(LoginRequiredMixin, CreateView):
                                   + str(form.cleaned_data['custom_id']).zfill(4)
         print(form.instance.item_code)
         form.instance.author_id = self.request.user.id
+        form.instance.item_count = form.instance.item_full_count
 
         if form.is_valid():
             # print(form.instance.item_date.strftime('%Y%m')[-4:])

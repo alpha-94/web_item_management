@@ -4,7 +4,13 @@
 {% block title %}- TEST{% endblock %}
 
 {% block content %}
-
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div class="row">
 
     <!-- DataTales -->
@@ -23,12 +29,22 @@
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <button id="post">등록하기</button>
                                 <table class="table table-bordered dataTable no-footer">
-
+                                    <colgroup>
+                                        <col width="20%"/>
+                                        <col width="10%"/>
+                                        <col width="30%"/>
+                                        <col width="8%"/>
+                                        <col width="10%"/>
+                                        <col width="10%"/>
+                                        <col width="6%"/>
+                                    </colgroup>
                                     <tr>
                                         <th>재고번호</th>
+                                        <th>품목</th>
                                         <th>품명</th>
                                         <th>선택</th>
-                                        <th>수량</th>
+                                        <th>총수량</th>
+                                        <th>재고량</th>
                                         <th>등록할 수량</th>
                                     </tr>
 
@@ -37,13 +53,15 @@
 
                                     <tr>
                                         <td>{{item.item_code}}</td>
+                                        <td>{{item.item_class}}</td>
                                         <td>{{item.item_name}}</td>
                                         <td>
                                             <input  id="itemCheck{{item.id}}" type="checkbox" name="item[]" value="{{item.id}}" >
                                         </td>
+                                        <td>{{item.item_full_count}}</td>
                                         <td>{{item.item_count}}</td>
                                         <td>
-                                            <input id="itemCount{{item.id}}" type="number" name="count[]" value="">
+                                            <input style="resize:none; width:50px;" id="itemCount{{item.id}}" type="number" name="count[]" value="">
                                         </td>
 
                                     </tr>
@@ -76,20 +94,38 @@
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <button>취소하기</button>
                                 <table class="table table-bordered dataTable no-footer">
-
+                                    <colgroup>
+                                        <col width="20%"/>
+                                        <col width="10%"/>
+                                        <col width="30%"/>
+                                        <col width="8%"/>
+                                        <col width="10%"/>
+                                        <col width="10%"/>
+                                        <col width="6%"/>
+                                    </colgroup>
                                     <tr>
                                         <th>재고번호</th>
+                                        <th>품목</th>
                                         <th>품명</th>
                                         <th>선택</th>
+                                        <th>총수량</th>
+                                        <th>출고량</th>
+                                        <th>취소할 수량</th>
                                     </tr>
 
 
-                                    {% for item in un_items %}
+                                    {% for select in selected %}
                                     <tr>
-                                        <td>{{item.item_code}}</td>
-                                        <td>{{item.item_name}}</td>
+                                        <td>{{select.item_id.item_code}}</td>
+                                        <td>{{select.item_id.item_class}}</td>
+                                        <td>{{select.item_id.item_name}}</td>
                                         <td>
-                                            <input class="select" type="checkbox" name="item[]" value="{{item.id}}" >
+                                            <input id="itemCheck{{select.item_id.id}}" class="select" type="checkbox" name="selected_item[]" value="{{select.item_id.id}}" >
+                                        </td>
+                                        <td>{{select.item_id.item_full_count}}</td>
+                                        <td>{{select.selected_item_count}}</td>
+                                        <td>
+                                            <input style="resize:none; width:50px;" id="itemCount{{select.item_id.id}}" type="number" name="canceled_count[]" value="">
                                         </td>
 
                                     </tr>
@@ -111,7 +147,11 @@
 
 </div>
 
+
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
 <script type="text/javascript">
 $(document).ready(function () {
             {% for item in items %}
@@ -122,6 +162,18 @@ $(document).ready(function () {
                 }
                 else {
                     $('#itemCount{{item.id}}').attr('readonly', true);
+                }
+            });
+            {% endfor %}
+
+            {% for select in selected %}
+            $('#itemCount{{select.item_id.id}}').attr('readonly', true);
+            $("#itemCheck{{select.item_id.id}}").change(function () {
+                if ($(this).is(":checked")) {
+                    $('#itemCount{{select.item_id.id}}').removeAttr("readonly")
+                }
+                else {
+                    $('#itemCount{{select.item_id.id}}').attr('readonly', true);
                 }
             });
             {% endfor %}
