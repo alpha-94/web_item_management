@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django import forms
 
 
@@ -7,12 +7,13 @@ from django import forms
 # 장고의 폼 : HTML 의 폼 역할, 데이터 베이스에 저장할 내용을 형식, 제약조건 결정
 
 class RegisterForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Repeat Password', widget=forms.PasswordInput)
+    group = forms.ModelChoiceField(queryset=Group.objects.all())
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email']
+        fields = ['username', 'first_name', 'last_name']
 
     def clean_password2(self):
         cd = self.cleaned_data

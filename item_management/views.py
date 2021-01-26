@@ -3,6 +3,8 @@ from django.shortcuts import render
 # 로그인 시 사용가능하게 만듦
 # 함수 뷰 전용
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
+
 # 클래스 뷰 전용
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
@@ -56,6 +58,10 @@ class Item_Filter(django_filters.FilterSet):
     item_class = django_filters.ModelMultipleChoiceFilter(queryset=Item_Class.objects.all(),
                                                           widget=forms.CheckboxSelectMultiple)
 
+    item_name = django_filters.CharFilter(field_name='item_name',
+                                          lookup_expr='icontains',
+                                          label='품명')
+
 
 class Item_list_View(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
     table_class = Item_Info_Table
@@ -72,19 +78,34 @@ def index(request):
 
 
 def index_analyze(request):
+    date_keys = ['y_2020_m_{}'.format(i) for i in range(1, 13)]
+    date_values = [Item_info.objects.filter(item_date__year='2020', item_date__month=i) for i in range(1, 13)]
+    date_dic = dict(zip(date_keys, date_values))
+
     context = {'object': Item_info.objects.all(),
-               
+
                # 품목별 현황
                'office': Item_info.objects.filter(item_class='사무'),
                'equipment': Item_info.objects.filter(item_class='장비'),
                'computational': Item_info.objects.filter(item_class='전산'),
                'part': Item_info.objects.filter(item_class='부품'),
-               
+               'tool': Item_info.objects.filter(item_class='수공구'),
+
+               'office_price': Item_info.objects.filter(item_class='사무').aggregate(Sum('item_price')),
+               'equipment_price': Item_info.objects.filter(item_class='장비').aggregate(Sum('item_price')),
+               'computational_price': Item_info.objects.filter(item_class='전산').aggregate(Sum('item_price')),
+               'part_price': Item_info.objects.filter(item_class='부품').aggregate(Sum('item_price')),
+               'tool_price': Item_info.objects.filter(item_class='수공구').aggregate(Sum('item_price')),
+
                # 부서별 현황
                'ARM': Item_info.objects.filter(group=1),
                'ARP': Item_info.objects.filter(group=2),
                'ARF': Item_info.objects.filter(group=3),
+
+               # 월별 현황
+               'y_2020': Item_info.objects.filter(item_date__year='2020')
                }
+    context.update(date_dic)
     return render(request, 'item_management/page_analyze.html', context)
 
 

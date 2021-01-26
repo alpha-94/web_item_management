@@ -48,8 +48,9 @@ INSTALLED_APPS = [
     'corsheaders',
     # 'stream_django',
     'django_extensions',
-    'bootstrap3',
+    'bootstrap4',
     'mathfilters',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +150,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Local host
 ALLOWED_HOSTS = ['10.0.0.235', 'localhost', '127.0.0.1']
+
+# table2 render
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
 
 # cors (외부아이피 접속용)
 CORS_ORIGIN_ALLOW_ALL = True

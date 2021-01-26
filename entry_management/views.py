@@ -13,7 +13,6 @@ from item_management.views import *
 # 예외문
 from django.core.exceptions import ObjectDoesNotExist
 
-
 from django import forms
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
@@ -23,7 +22,7 @@ from django.contrib import messages
 
 # 테이블 만들기
 import django_tables2 as tables
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -129,11 +128,36 @@ def post_Item(request, pk):
     filter_not_0_items = items_all.exclude(item_count=0)
     filter_selected_items = selected.filter(item_id__in=selected_list_item)
 
+    filter_not_0_f = Item_Filter(request.GET, queryset=filter_not_0_items)
+    filter_not_0_items = filter_not_0_f.qs
+    p_n_0_i = Paginator(filter_not_0_items, 10)
+    p_s_i = Paginator(filter_selected_items, 10)
+
+    page_1 = request.GET.get('page_item', 1)
+    page_2 = request.GET.get('page_se_item', 1)
+
+    try:
+        filter_not_0_items = p_n_0_i.page(page_1)
+        filter_selected_items = p_s_i.page(page_2)
+
+    except PageNotAnInteger:
+        filter_not_0_items = p_n_0_i.page(1)
+        filter_selected_items = p_s_i.page(1)
+
+    except EmptyPage:
+        filter_not_0_items = p_n_0_i.page(p_n_0_i.num_pages)
+        filter_selected_items = p_s_i.page(p_s_i.num_pages)
+
     rendering = render(request, 'entry_management/test.html', {
         'items': filter_not_0_items,
         'un_items': filter_selected_items,
         'selected': selected_all,
+        'entry': entry_id,
+        'filter': filter_not_0_f
     })
+
+    if request.method == 'GET':
+        return rendering
 
     if request.method == 'POST':
         print('post start')

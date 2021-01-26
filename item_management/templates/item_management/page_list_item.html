@@ -27,7 +27,7 @@
 
                     {% load django_tables2 %}
 
-                    {% load bootstrap3 %}
+                    {% load bootstrap4 %}
 
                     {% if filter %}
 
@@ -38,6 +38,7 @@
                                 {{choice.choice_label}}
                             </label>
                             {% endfor %}
+                            <div class="col-md-2">{{filter.form.item_name.label}} : {{filter.form.item_name}}</div>
 
                             <button class="btn btn-primary btn-icon-split">
                                         <span class="icon text-white-50">
@@ -49,6 +50,7 @@
                         {% endif %}
 
                     {% render_table table %}
+
                 </div>
 
             </div>

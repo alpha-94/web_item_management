@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth import login as django_login, logout as django_logout, authenticate
@@ -13,8 +14,11 @@ def register(request):
         # 올바른 회원가입 데이터 인가?
         if user_form.is_valid():
             new_user = user_form.save(commit=False)
+            group = Group.objects.get(name=user_form.cleaned_data['group'])
+            print(group)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
+            new_user.groups.add(group)
             return render(request, 'registration/register_done.html', {'new_user': new_user})
     else:
         # 회원가입 내용을 입력하는 상황
