@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 
 from .views import *
+from .views_copy import *
 
 app_name = 'entry'
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('update/<int:pk>', Entry_UpdateView.as_view(), name='entry_update'),  # <int:pk>
     # path('test/<int:pk>', Item_list_View_by_Entry.as_view(template_name='entry_management/test.html'), name='test'),
     path('test/<int:pk>', post_Item, name='test'),
+    # path('test2/', Select_View.as_view(), name='test2'),
 ]
 
 # Item_list_View_by_Entry.as_view(template_name='entry_management/test.html')
