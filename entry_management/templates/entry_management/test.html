@@ -27,20 +27,25 @@
             <div class="card-body">
                 {% if filter %}
                 <form action="" method="get" class="form form-inline">
+                    <label>품목 : </label>
                     {% for choice in filter.form.item_class %}
-                    <label class="checkbox-inline">
-                        <div class="col-md-4">{{choice.tag}}  </div>
-                        {{choice.choice_label}}
-                    </label>
-                    {% endfor %}
-                    <div class="col-md-2">{{filter.form.item_name.label}} : {{filter.form.item_name}}</div>
 
-                    <button class="btn btn-primary btn-icon-split">
+                        <label class="checkbox-inline">
+                            {{choice.tag}} {{choice.choice_label}}
+                        </label>
+
+                    {% endfor %}
+                    <div class="col-md-5">
+                        {{filter.form.item_name.label}} : {{filter.form.item_name}}
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary btn-icon-split">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-flag"></i>
                                         </span>
-                        <span class="text">품목검색</span>
-                    </button>
+                            <span class="text">검색</span>
+                        </button>
+                    </div>
 
                 </form>
 

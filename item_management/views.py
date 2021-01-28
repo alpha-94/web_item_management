@@ -73,7 +73,37 @@ class Item_list_View(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
 # Create your views here.
 
 def index(request):
-    context = {'object': Item_info.objects.all()}
+    date_keys = ['y_2020_m_{}'.format(i) for i in range(1, 13)]
+    date_values = [Item_info.objects.filter(item_date__year='2020', item_date__month=i) for i in range(1, 13)]
+    date_dic = dict(zip(date_keys, date_values))
+
+    context = {
+        'object': Item_info.objects.all(),
+        'sort_date_object': Item_info.objects.all().order_by('item_date'),
+        'add_all_price':Item_info.objects.only('item_price').aggregate(Sum('item_price')),
+
+        # 품목별 현황
+        'office': Item_info.objects.filter(item_class='사무'),
+        'equipment': Item_info.objects.filter(item_class='장비'),
+        'computational': Item_info.objects.filter(item_class='전산'),
+        'part': Item_info.objects.filter(item_class='부품'),
+        'tool': Item_info.objects.filter(item_class='수공구'),
+
+        'office_price': Item_info.objects.filter(item_class='사무').aggregate(Sum('item_price')),
+        'equipment_price': Item_info.objects.filter(item_class='장비').aggregate(Sum('item_price')),
+        'computational_price': Item_info.objects.filter(item_class='전산').aggregate(Sum('item_price')),
+        'part_price': Item_info.objects.filter(item_class='부품').aggregate(Sum('item_price')),
+        'tool_price': Item_info.objects.filter(item_class='수공구').aggregate(Sum('item_price')),
+
+        # 부서별 현황
+        'ARM': Item_info.objects.filter(group=1),
+        'ARP': Item_info.objects.filter(group=2),
+        'ARF': Item_info.objects.filter(group=3),
+
+        # 월별 현황
+        'y_2020': Item_info.objects.filter(item_date__year='2020')
+    }
+    context.update(date_dic)
     return render(request, 'item_management/page_main.html', context)
 
 
@@ -82,29 +112,30 @@ def index_analyze(request):
     date_values = [Item_info.objects.filter(item_date__year='2020', item_date__month=i) for i in range(1, 13)]
     date_dic = dict(zip(date_keys, date_values))
 
-    context = {'object': Item_info.objects.all(),
+    context = {
+        'object': Item_info.objects.all(),
 
-               # 품목별 현황
-               'office': Item_info.objects.filter(item_class='사무'),
-               'equipment': Item_info.objects.filter(item_class='장비'),
-               'computational': Item_info.objects.filter(item_class='전산'),
-               'part': Item_info.objects.filter(item_class='부품'),
-               'tool': Item_info.objects.filter(item_class='수공구'),
+        # 품목별 현황
+        'office': Item_info.objects.filter(item_class='사무'),
+        'equipment': Item_info.objects.filter(item_class='장비'),
+        'computational': Item_info.objects.filter(item_class='전산'),
+        'part': Item_info.objects.filter(item_class='부품'),
+        'tool': Item_info.objects.filter(item_class='수공구'),
 
-               'office_price': Item_info.objects.filter(item_class='사무').aggregate(Sum('item_price')),
-               'equipment_price': Item_info.objects.filter(item_class='장비').aggregate(Sum('item_price')),
-               'computational_price': Item_info.objects.filter(item_class='전산').aggregate(Sum('item_price')),
-               'part_price': Item_info.objects.filter(item_class='부품').aggregate(Sum('item_price')),
-               'tool_price': Item_info.objects.filter(item_class='수공구').aggregate(Sum('item_price')),
+        'office_price': Item_info.objects.filter(item_class='사무').aggregate(Sum('item_price')),
+        'equipment_price': Item_info.objects.filter(item_class='장비').aggregate(Sum('item_price')),
+        'computational_price': Item_info.objects.filter(item_class='전산').aggregate(Sum('item_price')),
+        'part_price': Item_info.objects.filter(item_class='부품').aggregate(Sum('item_price')),
+        'tool_price': Item_info.objects.filter(item_class='수공구').aggregate(Sum('item_price')),
 
-               # 부서별 현황
-               'ARM': Item_info.objects.filter(group=1),
-               'ARP': Item_info.objects.filter(group=2),
-               'ARF': Item_info.objects.filter(group=3),
+        # 부서별 현황
+        'ARM': Item_info.objects.filter(group=1),
+        'ARP': Item_info.objects.filter(group=2),
+        'ARF': Item_info.objects.filter(group=3),
 
-               # 월별 현황
-               'y_2020': Item_info.objects.filter(item_date__year='2020')
-               }
+        # 월별 현황
+        'y_2020': Item_info.objects.filter(item_date__year='2020')
+    }
     context.update(date_dic)
     return render(request, 'item_management/page_analyze.html', context)
 
