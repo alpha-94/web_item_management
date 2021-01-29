@@ -5,8 +5,9 @@
 
 {% block content %}
 
-<div class="embed-responsive embed-responsive-16by9">
-	  <img class="embed-responsive-item" src="{% url 'item:qrcode' %}">
-	</div>
+<form action="{% url 'item:qrcode' %}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+<input type="image" name="img" src="{% url 'item:qrcode' %}">
+</form>
 
 {% endblock %}

@@ -37,8 +37,10 @@ class Item_info(models.Model):
     item_condition = models.ForeignKey(Item_Condition, on_delete=models.CASCADE, related_name='it_condition',
                                        verbose_name='상태')
 
-    item_full_count = models.PositiveSmallIntegerField(verbose_name='총수량', default=1)  # 32767 자리까지 / item_full_count = item_count + selected_item_count
-    item_count = models.PositiveSmallIntegerField(verbose_name='재고량', default=1)  # 32767 자리까지 - 등록 시 기본적으로 full_count와 동일하게 들어감
+    item_full_count = models.PositiveSmallIntegerField(verbose_name='총수량',
+                                                       default=1)  # 32767 자리까지 / item_full_count = item_count + selected_item_count
+    item_count = models.PositiveSmallIntegerField(verbose_name='재고량',
+                                                  default=1)  # 32767 자리까지 - 등록 시 기본적으로 full_count와 동일하게 들어감
 
     # item 상세사항
     manager_name = models.CharField(max_length=50, null=True, blank=True, verbose_name='담당자')
@@ -53,3 +55,8 @@ class Item_info(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.item_code, self.item_name)
+
+
+class QRCODE(models.Model):
+    qr_id = models.TextField(max_length=225)
+    qr_decode = models.TextField(max_length=100, verbose_name='qr코드')

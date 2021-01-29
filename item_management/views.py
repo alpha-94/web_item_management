@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import cv2  # pip install opencv-python
 
 # 로그인 시 사용가능하게 만듦
 # 함수 뷰 전용
@@ -24,7 +25,7 @@ import django_filters
 
 from .qr_code import Stream
 
-from django.http.response import StreamingHttpResponse
+from django.http.response import StreamingHttpResponse, HttpResponse
 
 
 class Item_DetailView(DetailView):
@@ -80,7 +81,7 @@ def index(request):
     context = {
         'object': Item_info.objects.all(),
         'sort_date_object': Item_info.objects.all().order_by('item_date'),
-        'add_all_price':Item_info.objects.only('item_price').aggregate(Sum('item_price')),
+        'add_all_price': Item_info.objects.only('item_price').aggregate(Sum('item_price')),
 
         # 품목별 현황
         'office': Item_info.objects.filter(item_class='사무'),
@@ -220,35 +221,46 @@ class Item_UpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'item_management/page_update_item.html'
 
 
+obj = Stream()
+
+
 # ############################QR코드 관련############################# #
-def gen():
+def gen(request):
     print('실행')
-    obj = Stream()
+
     while True:
-        frame = obj.stream()
+        frame = obj.stream(request)
         try:
             frame = (b'--frame\r\n'
                      b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
             yield frame
 
         except TypeError:
-            obj.read_code()
-            c = {'data': frame}
-            print(c)
-            # return c
+            print('break')
+            # obj.cap.stop()
             break
 
 
 def qrcode(request):
-    if request.method == 'GET':
-        print('Get Video')
-        # return render(request, 'item_management/qrcode_result.html', {'object': result})
-        return StreamingHttpResponse(gen(), content_type='multipart/x-mixed-replace; boundary=frame')
-    else:
-        print('tt')
+    context = {'data': obj.barcode_data}
+    if obj.barcode_data is not None:
+        obj.barcode_data = None
+        print('is not none', context)
+        print('is not none', request.method)  # render(request, 'item_management/qrcode_result.html', {'data': context})
+        return render(request, 'item_management/qrcode_result.html', {'data': context})
+    print('is none', request.method)
+    return StreamingHttpResponse(gen(request), content_type='multipart/x-mixed-replace; boundary=frame')
 
 
 def index_video(request):
-    if request.method == 'GET':
-        print('Get Index')
+    print('index def :: ', obj.barcode_data)
+    if request.method == 'POST':
+        print('post')
+        print(request.FILES)
+        print(request.POST)
+
     return render(request, 'item_management/qrcode.html')
+
+
+def result(request):
+    return render(request, 'item_management/qrcode_result.html')

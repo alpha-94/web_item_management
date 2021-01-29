@@ -3,6 +3,7 @@ import numpy as np  # pip install numpy
 import cv2  # pip install opencv-python
 from imutils.video import VideoStream
 import imutils
+from .models import QRCODE
 
 
 class Stream:
@@ -11,7 +12,7 @@ class Stream:
         self.barcode_type = None
         self.barcode_data = None
 
-    def stream(self):
+    def stream(self, request):
 
         img = self.cap.read()
         # img = imutils.resize(img, width=500)
@@ -25,14 +26,17 @@ class Stream:
             self.barcode_data = d.data.decode("UTF-8")
             self.barcode_type = d.type
 
-            if self.barcode_data != '':
-                return self.barcode_data
-
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
-            text = ''  # '%s (%s)' % (barcode_data, barcode_type)
+            text = '%s (%s)' % (self.barcode_data, self.barcode_type)
             cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
 
+            if self.barcode_data != '' and self.barcode_type == 'QRCODE':
+                qr_db = QRCODE.objects
+
+                # token = request.GET.get('csrfmiddlewaretoken')[:224]
+                # qr_db.create(qr_id=token, qr_decode=self.barcode_data)
+                return False
         # cv2.imshow('img', img)
         _, jpeg = cv2.imencode('.jpg', img)
 
