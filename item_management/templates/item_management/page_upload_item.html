@@ -7,6 +7,10 @@
     <div class="row">
         <div class="col-md-2 order-md-1"></div>
         <div class="col-md-8 order-md-2">
+            <div>
+                <label>재고번호 등록</label>
+                <a class="btn btn-primary" href="/admin/item_management/item_info/import/">excel</a>
+            </div>
             <!--  action 에 빈 값이면 현재 페이지에서 하겠단 뜻-->
 
             <form class="needs-validation" action="" method="post" enctype="multipart/form-data">
@@ -15,7 +19,7 @@
                 {% for field in form.hidden_fields %}
                 {{field}}
                 {% endfor %}
-                <label>재고번호 등록</label>
+
                 <div class="row">
 
                     {% for field in form.visible_fields %}

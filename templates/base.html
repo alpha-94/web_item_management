@@ -68,6 +68,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{% url 'item:item_upload' %}">자산 등록</a>
                         <a class="collapse-item" href="{% url 'item:item_list' %}">자산 조회</a>
+                        <a class="collapse-item" href="{% url 'item:qrcode_index' %}">QR코드</a>
                     </div>
                 </div>
             </li>
@@ -146,15 +147,11 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="/admin">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="/admin/admin/logentry/">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
                                 </a>

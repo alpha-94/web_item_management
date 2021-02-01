@@ -1,5 +1,7 @@
-from django.shortcuts import render
 import cv2  # pip install opencv-python
+import re
+
+from django.shortcuts import render
 
 # 로그인 시 사용가능하게 만듦
 # 함수 뷰 전용
@@ -221,10 +223,11 @@ class Item_UpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'item_management/page_update_item.html'
 
 
+# ############################QR코드 관련############################# #
+
 obj = Stream()
 
 
-# ############################QR코드 관련############################# #
 def gen(request):
     print('실행')
 
@@ -242,12 +245,18 @@ def gen(request):
 
 
 def qrcode(request):
-    context = {'data': obj.barcode_data}
-    if obj.barcode_data is not None:
-        obj.barcode_data = None
-        print('is not none', context)
-        print('is not none', request.method)  # render(request, 'item_management/qrcode_result.html', {'data': context})
-        return render(request, 'item_management/qrcode_result.html', {'data': context})
+    item_object = None
+    pk = 0
+    if request.method == 'POST':
+        if obj.barcode_data is not None:
+            full_name = obj.barcode_data
+            # 초기화
+            obj.barcode_data = None
+            name = full_name[1:12]
+            item_object = [e for e in Item_info.objects.filter(item_code=name)]
+            plus = Selected_Item_Info.objects.all()
+
+        return render(request, 'item_management/page_detail_item.html', {'object': item_object[0], 'plus': plus})
     print('is none', request.method)
     return StreamingHttpResponse(gen(request), content_type='multipart/x-mixed-replace; boundary=frame')
 
